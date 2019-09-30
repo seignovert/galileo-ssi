@@ -7,7 +7,7 @@ with open('requirements.txt', 'r') as f:
     requirements = f.read().splitlines()
 
 setup(
-    name='ssi',
+    name='galileo-ssi',
     version='0.1',
     description='Python parser for Galileo SSI instrument',
     author='Benoit Seignovert',
@@ -15,4 +15,6 @@ setup(
     url='https://github.com/seignovert/galileo-ssi',
     install_requires=requirements,
     python_requires='>=3.6',
+    license='MIT',
+    packages=['ssi'],
 )
