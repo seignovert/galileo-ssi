@@ -1,2 +1,8 @@
+# ISIS data
 *.cub
 *.pho.txt
+
+# Python
+*.pyc
+__pycache__/
+dist/
