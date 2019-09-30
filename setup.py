@@ -20,6 +20,6 @@ setup(
     install_requires=requirements,
     python_requires='>=3.6',
     license='MIT',
-    packages=['ssi'],
+    packages=['ssi', 'ssi.isis'],
     long_description=long_description,
 )
