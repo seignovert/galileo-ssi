@@ -6,6 +6,10 @@ from setuptools import setup
 with open('requirements.txt', 'r') as f:
     requirements = f.read().splitlines()
 
+with open('README.rst', 'r') as f:
+    long_description = f.read()
+
+
 setup(
     name='galileo-ssi',
     version='0.1',
@@ -17,4 +21,5 @@ setup(
     python_requires='>=3.6',
     license='MIT',
     packages=['ssi'],
+    long_description=long_description,
 )
