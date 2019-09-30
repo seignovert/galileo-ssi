@@ -4,6 +4,14 @@ Python parser for Galileo SSI instrument
 Install
 -------
 
+With PIP:
+
+.. code:: bash
+
+    pip install galileo-ssi
+
+From the source:
+
 .. code:: bash
 
     python setup.py develop
