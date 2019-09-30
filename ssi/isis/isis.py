@@ -6,11 +6,11 @@ import numpy as np
 
 import pvl
 
-from errors import ISISError
-from labels import ISISLabels
-from tables import ISISTables
-from dtime import dtime
-from var import BYTE_ORDERS, FIELD_TYPES
+from .dtime import dtime
+from .errors import ISISError
+from .labels import ISISLabels
+from .tables import ISISTables
+from .vars import BYTE_ORDERS, FIELD_TYPES
 
 
 class ISISCube:

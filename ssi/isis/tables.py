@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from var import BYTE_ORDERS, FIELD_TYPES
+from .vars import BYTE_ORDERS, FIELD_TYPES
 
 
 class ISISField:

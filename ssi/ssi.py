@@ -1,6 +1,6 @@
 """Galileo SSI module to parse ISIS files."""
 
-from isis import ISISCube
+from .isis import ISISCube
 
 
 class SSI(ISISCube):
@@ -65,12 +65,14 @@ class SSI(ISISCube):
     @property
     def sticks(self):
         """Cube sample ticks."""
-        return [1, self.NS // 4, self.NS // 2, self.NS // 4 + self.NS // 2, self.NS]
+        return [1, self.NS // 4, self.NS // 2,
+                self.NS // 4 + self.NS // 2, self.NS]
 
     @property
     def lticks(self):
         """Cube line ticks."""
-        return [1, self.NL // 4, self.NL // 2, self.NL // 4 + self.NL // 2, self.NL]
+        return [1, self.NL // 4, self.NL // 2,
+                self.NL // 4 + self.NL // 2, self.NL]
 
     @property
     def slabel(self):
