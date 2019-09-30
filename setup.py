@@ -13,4 +13,5 @@ setup(
     author='Benoit Seignovert',
     author_email='benoit.a.seignovert@jpl.nasa.gov',
     install_requires=requirements,
+    python_requires='>=3.6',
 )
