@@ -109,7 +109,7 @@ class SSI(ISISCube):
 
         """
         if name not in self.layers:
-            raise ValueError(f'Layer `{name}` unknown.')
+            raise ValueError(f'Layer `{name}` not found.')
 
         return self.layers.index(name)
 
@@ -123,7 +123,7 @@ class SSI(ISISCube):
         to be stored in the first band of the cube.
 
         """
-        return self.cube[0, :, :]
+        return self[self.filter_name]
 
     @property
     def phase(self):
