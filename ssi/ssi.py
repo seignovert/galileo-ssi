@@ -2,6 +2,8 @@
 
 from .isis import ISISCube
 from .img import IMG
+from .pixel import SSIPixel
+
 
 class SSI(ISISCube):
     """Galileo Solid State Image System ISIS3 object.
@@ -34,7 +36,7 @@ class SSI(ISISCube):
             return IMG(self.cube[self._get_layer(val), :, :])
 
         if isinstance(val, tuple):
-            return self.data[val]
+            return SSIPixel(self, *val)
 
         raise IndexError('\n - '.join([
             f'Invalid format. Use:',
