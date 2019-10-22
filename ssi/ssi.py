@@ -136,8 +136,8 @@ class SSI(ISISCube):
         return self['Incidence Angle']
 
     @property
-    def eme(self):
-        """Emergence angle data (degree)."""
+    def emi(self):
+        """Emission angle data (degree)."""
         return self['Emission Angle']
 
     @property
