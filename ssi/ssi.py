@@ -1,7 +1,7 @@
 """Galileo SSI module to parse ISIS files."""
 
 from .isis import ISISCube
-
+from .img import IMG
 
 class SSI(ISISCube):
     """Galileo Solid State Image System ISIS3 object.
@@ -28,9 +28,20 @@ class SSI(ISISCube):
             f'Main target: {self.target_name}',
         ]))
 
-    def __getitem__(self, name):
-        """Return data array based on item name."""
-        return self.cube[self._get_layer(name), :, :]
+    def __getitem__(self, val):
+        """Return data array based on value name or index."""
+        if isinstance(val, str):
+            return IMG(self.cube[self._get_layer(val), :, :])
+
+        if isinstance(val, tuple):
+            return self.data[val]
+
+        raise IndexError('\n - '.join([
+            f'Invalid format. Use:',
+            'STR -> Band image',
+            '[INT, INT] -> Sample, Line pixel',
+            '[SLICE, SLICE] -> Sample, Line data',
+        ]))
 
     @property
     def img_id(self):
