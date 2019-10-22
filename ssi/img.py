@@ -55,6 +55,9 @@ class IMG(np.ndarray):
         if isinstance(val, tuple) and len(val) == 2:
             return self.__data[_parse(val[1], self.NL), _parse(val[0], self.NS)]
 
+        if isinstance(val, np.ndarray):
+            return self.__data[val]
+
         raise IndexError('Invalid format. Use:\n [INT|SLICE, INT|SLICE] with '
             f'1 ≤ Sample ≤ {self.NS} and 1 ≤ Line ≤ {self.NL}')
 
