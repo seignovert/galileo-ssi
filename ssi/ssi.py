@@ -2,6 +2,7 @@
 
 import numpy as np
 
+from .align import offset
 from .isis import ISISCube
 from .img import IMG
 from .pixel import SSIPixel
@@ -171,6 +172,16 @@ class SSI(ISISCube):
         return self['Pixel Resolution']
 
     @property
+    def limb(self):
+        """Navigation limb pixels."""
+        return np.isnan(self.inc)
+
+    @property
+    def ground(self):
+        """Navigation ground pixels."""
+        return ~self.limb
+
+    @property
     def s(self):
         """Samples range."""
         return np.arange(1, self.NS + 1)
@@ -179,3 +190,18 @@ class SSI(ISISCube):
     def l(self):
         """Lines range."""
         return np.arange(1, self.NL + 1)
+
+    @property
+    def offset(self):
+        """Image offset compare to the navigation."""
+        return offset(self.data, self.ground)
+
+    @property
+    def offset_s(self):
+        """Image offset in sample direction."""
+        return offset(self.data, self.ground, axis=0)
+
+    @property
+    def offset_l(self):
+        """Image offset in line direction."""
+        return offset(self.data, self.ground, axis=1)
