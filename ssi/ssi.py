@@ -1,5 +1,7 @@
 """Galileo SSI module to parse ISIS files."""
 
+import numpy as np
+
 from .isis import ISISCube
 from .img import IMG
 from .pixel import SSIPixel
@@ -167,3 +169,13 @@ class SSI(ISISCube):
     def res(self):
         """Ground pixel resolution data (km/pixel)."""
         return self['Pixel Resolution']
+
+    @property
+    def s(self):
+        """Samples range."""
+        return np.arange(1, self.NS + 1)
+
+    @property
+    def l(self):
+        """Lines range."""
+        return np.arange(1, self.NL + 1)
