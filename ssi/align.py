@@ -32,6 +32,7 @@ def corr_offset(data, nav, axis):
 
     return len(corr) // 2 - np.argmax(corr)
 
+
 def img_offset(arr, offset=False, is_data=True):
     """Offset image based on offset value.
 
@@ -59,6 +60,7 @@ def img_offset(arr, offset=False, is_data=True):
 
     return IMG(nav_offset(arr, *offset))
 
+
 def data_offset(data, ds, dl, fill_value=np.nan):
     """Data array with masked offset values."""
     mask = np.zeros(np.shape(data))
@@ -74,6 +76,7 @@ def data_offset(data, ds, dl, fill_value=np.nan):
         mask[dl:, :] = 1
 
     return np.ma.array(data, mask=mask, fill_value=fill_value).filled()
+
 
 def nav_offset(nav, ds, dl, fill_value=np.nan):
     """Navigation array with offsetted."""

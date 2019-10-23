@@ -64,7 +64,7 @@ class IMG(np.ndarray):
             return self._data[val]
 
         raise IndexError('Invalid format. Use:\n [INT|SLICE, INT|SLICE] with '
-            f'1 ≤ Sample ≤ {self.NS} and 1 ≤ Line ≤ {self.NL}')
+                         f'1 ≤ Sample ≤ {self.NS} and 1 ≤ Line ≤ {self.NL}')
 
     @property
     def shape(self):
