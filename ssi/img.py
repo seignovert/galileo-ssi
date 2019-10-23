@@ -39,27 +39,33 @@ def _parse(index, n):
 
 class IMG(np.ndarray):
     """Image object based on Numpy array."""
-    def __new__(cls, data):
-        obj = np.asarray(data).view(cls)
-        cls.__data = np.asarray(data)
-        return obj
+    def __new__(cls, data, *args, **kwargs):
+        return np.asarray(data).view(cls)
 
     def __str__(self):
-        return str(self.__data)
+        return str(self._data)
 
     def __repr__(self):
-        return repr(self.__data)
+        return repr(self._data)
 
     def __getitem__(self, val):
         """Return data array based on value index."""
         if isinstance(val, tuple) and len(val) == 2:
-            return self.__data[_parse(val[1], self.NL), _parse(val[0], self.NS)]
+            if val[1] is None:
+                return self._data[val]
+
+            return self._data[_parse(val[1], self.NL), _parse(val[0], self.NS)]
 
         if isinstance(val, np.ndarray):
-            return self.__data[val]
+            return self._data[val]
 
         raise IndexError('Invalid format. Use:\n [INT|SLICE, INT|SLICE] with '
             f'1 ≤ Sample ≤ {self.NS} and 1 ≤ Line ≤ {self.NL}')
+
+    @property
+    def shape(self):
+        """Data shape."""
+        return self._data.shape
 
     @property
     def NL(self):
@@ -70,3 +76,8 @@ class IMG(np.ndarray):
     def NS(self):
         """Line height."""
         return self.shape[0]
+
+    @property
+    def _data(self):
+        """Data content."""
+        return np.asarray(self.data)
