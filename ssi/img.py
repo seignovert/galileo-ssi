@@ -50,6 +50,9 @@ class IMG(np.ndarray):
 
     def __getitem__(self, val):
         """Return data array based on value index."""
+        if self.data.ndim == 1:
+            return self._data[val]
+
         if isinstance(val, tuple) and len(val) == 2:
             if val[1] is None:
                 return self._data[val]
@@ -80,4 +83,4 @@ class IMG(np.ndarray):
     @property
     def _data(self):
         """Data content."""
-        return np.asarray(self.data)
+        return np.asarray(self.data) if self.data.ndim > 1 else np.float32(self.data)
