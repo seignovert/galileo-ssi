@@ -40,7 +40,8 @@ def _parse(index, n):
 class IMG(np.ndarray):
     """Image object based on Numpy array."""
     def __new__(cls, data, *args, **kwargs):
-        return np.asarray(data).view(cls)
+        return np.asarray(data).view(cls) if np.ndim(data) == 2 else \
+            np.asarray(data).view(np.ndarray)
 
     def __str__(self):
         return str(self._data)
@@ -68,17 +69,17 @@ class IMG(np.ndarray):
     @property
     def shape(self):
         """Data shape."""
-        return self._data.shape
-
-    @property
-    def NL(self):
-        """Sample width."""
-        return self.shape[1]
+        return self.data.shape if self.data.ndim <= 1 else (self.NS, self.NL)
 
     @property
     def NS(self):
+        """Sample width."""
+        return self._data.shape[1]
+
+    @property
+    def NL(self):
         """Line height."""
-        return self.shape[0]
+        return self._data.shape[0]
 
     @property
     def _data(self):

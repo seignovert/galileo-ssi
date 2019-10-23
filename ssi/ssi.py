@@ -2,9 +2,8 @@
 
 import numpy as np
 
-from .align import offset
+from .align import corr_offset, img_offset
 from .isis import ISISCube
-from .img import IMG
 from .pixel import SSIPixel
 
 
@@ -15,10 +14,17 @@ class SSI(ISISCube):
     ----------
     filename: str
         Input SSI filename.
+    align: bool, optional
+        Enable data auto-alignment.
+    offset_s: int, optional
+        Provide sample offset to apply to the data.
+    offset_l: int, optional
+        Provide line offset to apply to the data.
 
     """
-    def __init__(self, filename):
+    def __init__(self, filename, align=False, offset_s=None, offset_l=None):
         super().__init__(filename)
+        self.alignment(align=align, offset_s=offset_s, offset_l=offset_l)
 
     def __str__(self):
         return self.img_id
@@ -31,12 +37,18 @@ class SSI(ISISCube):
             f'Filter name: {self.filter_name}',
             f'Exposure: {self.exposure[0]} {self.exposure[1]}',
             f'Main target: {self.target_name}',
+            f'Data alignment: {self.offset}',
         ]))
 
     def __getitem__(self, val):
         """Return data array based on value name or index."""
         if isinstance(val, str):
-            return IMG(self.cube[self._get_layer(val), :, :])
+            ilayer = self._get_layer(val)
+            data = self.cube[ilayer, :, :]
+
+            return img_offset(data,
+                              offset=self.offset,
+                              is_data=(val == 'Data'))
 
         if isinstance(val, tuple):
             return SSIPixel(self, *val)
@@ -124,6 +136,9 @@ class SSI(ISISCube):
             If the :py:attr:`name` is not available in the cube.
 
         """
+        if name == 'Data':
+            name = self.filter_name
+
         if name not in self.layers:
             raise ValueError(f'Layer `{name}` not found.')
 
@@ -139,7 +154,7 @@ class SSI(ISISCube):
         to be stored in the first band of the cube.
 
         """
-        return self[self.filter_name]
+        return self['Data']
 
     @property
     def phase(self):
@@ -192,16 +207,33 @@ class SSI(ISISCube):
         return np.arange(1, self.NL + 1)
 
     @property
-    def offset(self):
-        """Image offset compare to the navigation."""
-        return offset(self.data, self.ground)
+    def _corr_s(self):
+        """Image correlation offset in sample direction."""
+        return corr_offset(self.data, self.ground, axis=0)
+
+    @property
+    def _corr_l(self):
+        """Image correlation offset in line direction."""
+        return corr_offset(self.data, self.ground, axis=1)
+
+    def alignment(self, align=True, offset_s=None, offset_l=None):
+        """Align navigation data on the I/F data."""
+        self.offset = False
+
+        if align or offset_s is not None or offset_l is not None:
+            offset_s = int(offset_s) if offset_s is not None else self._corr_s
+            offset_l = int(offset_l) if offset_l is not None else self._corr_l
+
+            self.offset = (offset_s, offset_l)
+
+        return self.offset
 
     @property
     def offset_s(self):
-        """Image offset in sample direction."""
-        return offset(self.data, self.ground, axis=0)
+        """Offset in sample direction."""
+        return 0 if not self.offset else self.offset[0]
 
     @property
     def offset_l(self):
-        """Image offset in line direction."""
-        return offset(self.data, self.ground, axis=1)
+        """Offset in line direction."""
+        return 0 if not self.offset else self.offset[1]
