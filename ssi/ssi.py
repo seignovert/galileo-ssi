@@ -197,6 +197,16 @@ class SSI(ISISCube):
         return ~self.limb
 
     @property
+    def mu0(self):
+        """Incidence cosine angle."""
+        return np.cos(np.radians(self.inc))
+
+    @property
+    def mu1(self):
+        """Emission cosine angle."""
+        return np.cos(np.radians(self.emi))
+
+    @property
     def s(self):
         """Samples range."""
         return np.arange(1, self.NS + 1)
