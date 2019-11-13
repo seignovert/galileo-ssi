@@ -12,7 +12,7 @@ with open('README.rst', 'r') as f:
 
 setup(
     name='galileo-ssi',
-    version='1.2',
+    version='1.3',
     description='Python parser for Galileo SSI instrument',
     author='Benoit Seignovert',
     author_email='benoit.a.seignovert@jpl.nasa.gov',
