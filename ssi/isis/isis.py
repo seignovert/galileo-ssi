@@ -9,6 +9,7 @@ import pvl
 from .dtime import dtime
 from .errors import ISISError
 from .labels import ISISLabels
+from .original_labels import ISISOriginalLabels
 from .tables import ISISTables
 from .vars import BYTE_ORDERS, FIELD_TYPES
 
@@ -54,6 +55,7 @@ class ISISCube:
         self.__pvl = None
         self.__labels = None
         self.__tables = None
+        self.__lbls = None
         self.__cube = None
 
         if not self.is_file:
@@ -328,3 +330,10 @@ class ISISCube:
     def target_radius(self):
         """Main target mean radius (km)."""
         return np.power(np.prod(self.target_radii), 1/3)
+
+    @property
+    def original_labels(self):
+        """Get original labels."""
+        if self.__lbls is None:
+            self.__lbls = ISISOriginalLabels(self.filename, self.pvl)
+        return self.__lbls
