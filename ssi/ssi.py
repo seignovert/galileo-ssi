@@ -150,8 +150,8 @@ class SSI(ISISCube):
 
         Note
         ----
-        By default the data are considered
-        to be stored in the first band of the cube.
+        Use the ``FilterName`` to determine
+        the band location of the data.
 
         """
         return self['Data']
