@@ -3,6 +3,8 @@
 from .data import DATA
 from .units import GeolUnits
 
+from matplotlib.colors import ListedColormap
+
 
 class EUROPA(metaclass=GeolUnits):
     """Europa geological map."""
@@ -21,3 +23,15 @@ class EUROPA(metaclass=GeolUnits):
         200: 'High albedo chaos',
         255: 'Ridged plains',
     }
+
+    CMAP = ListedColormap([
+        '#8400a8',
+        '#ffaa00',
+        '#ffd37f',
+        '#ffebaf',
+        '#267300',
+        '#70a800',
+        '#89cd66',
+        '#d3ffbe',
+        '#bee8ff',
+    ])
