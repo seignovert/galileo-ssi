@@ -174,7 +174,7 @@ class SSI(ISISCube):
     @property
     def lon(self):
         """West longitude data (degree)."""
-        return self['Longitude']
+        return -self['Longitude'] % 360
 
     @property
     def lat(self):
