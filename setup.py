@@ -20,6 +20,7 @@ setup(
     install_requires=requirements,
     python_requires='>=3.6',
     license='MIT',
-    packages=['ssi', 'ssi.isis'],
+    packages=['ssi', 'ssi.isis', 'ssi.geol'],
     long_description=long_description,
+    include_package_data=True,
 )
