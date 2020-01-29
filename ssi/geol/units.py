@@ -70,6 +70,9 @@ def geol_units(img, lon_w, lat, legend=None):
     units = img[j, i]
 
     if not isinstance(legend, dict):
+        if np.ma.is_masked(lon_w) or np.ma.is_masked(lat):
+            mask = np.ma.getmask(lon_w) | np.ma.getmask(lat)
+            return np.ma.array(units, mask=mask)
         return units
 
     if np.ndim(units) == 0:
@@ -108,7 +111,9 @@ class GeolUnits(type):
             if not hasattr(img, 'lat'):
                 raise AttributeError('Missing `lat` attribute in image.')
 
-            return cls.geol_units(img.lon, img.lat, legend=legend)
+            lon_w = np.ma.array(img.lon, mask=img.limb)
+            lat = np.ma.array(img.lat, mask=img.limb)
+            return cls.geol_units(lon_w, lat, legend=legend)
 
         if len(args) == 2:
             lon, lat = args
