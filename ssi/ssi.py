@@ -2,6 +2,9 @@
 
 import numpy as np
 
+from matplotlib.path import Path
+from matplotlib.patches import PathPatch
+
 from .align import corr_offset, img_offset
 from .isis import ISISCube
 from .pixel import SSIPixel
@@ -247,3 +250,19 @@ class SSI(ISISCube):
     def offset_l(self):
         """Offset in line direction."""
         return 0 if not self.offset else self.offset[1]
+
+    def _edges(self, data):
+        """Get edges from data array."""
+        return np.hstack([
+            data[:, 1],
+            data[self.NS, :],
+            data[:, self.NL][::-1],
+            data[1, :][::-1],
+            ])
+
+    def contour(self, **kwargs):
+        """Get patch based on the image contour."""
+        return PathPatch(
+            Path(np.transpose([
+                self._edges(self.lon), self._edges(self.lat)
+            ])), **kwargs)
