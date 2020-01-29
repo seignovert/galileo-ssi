@@ -35,10 +35,13 @@ def grid(img, lon_w, lat):
     j = np.round((90 - lat) * h / 180).astype(int)
 
     if isinstance(lon_w, (int, float)):
-        if i >= w:
+        if i >= w or np.isnan(lon_w):
             i = w - 1
+        if np.isnan(lat):
+            j = h - 1
     else:
-        i[i >= w] = w - 1
+        i[(i >= w) | np.isnan(lon_w)] = w - 1
+        j[np.isnan(lat)] = h - 1
 
     return i, j
 
