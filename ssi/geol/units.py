@@ -33,6 +33,13 @@ def grid(img, lon_w, lat):
 
     i = np.round(-lon_w % 360 * w / 360).astype(int)
     j = np.round((90 - lat) * h / 180).astype(int)
+
+    if isinstance(lon_w, (int, float)):
+        if i >= w:
+            i = w - 1
+    else:
+        i[i >= w] = w - 1
+
     return i, j
 
 
