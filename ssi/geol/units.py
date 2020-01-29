@@ -87,6 +87,20 @@ def geol_units(img, lon_w, lat, legend=None):
     return geol
 
 
+def _key(data, value):
+    """Get key in data from value.
+
+    Note
+    ----
+    Only the first iteration
+
+    """
+    if not isinstance(data, dict):
+        raise TypeError('Data must be a dict')
+
+    return [k for k, v in data.items() if value == v]
+
+
 class GeolUnits(type):
     """Geological map units."""
 
@@ -152,3 +166,14 @@ class GeolUnits(type):
             legend = cls.LEGEND
 
         return geol_units(cls.img, lon_w, lat, legend=legend)
+
+    def color(cls, unit, cmap=None, legend=None):
+        """Get color from unit name."""
+        if cmap is None:
+            cmap = cls.CMAP
+
+        if legend is None:
+            legend = cls.LEGEND
+
+        colors = [cmap(k) for k in _key(legend, unit)]
+        return colors[0] if len(colors) == 1 else colors
