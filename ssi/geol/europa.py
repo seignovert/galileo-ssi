@@ -1,9 +1,8 @@
 """Europa geological data module."""
 
+from .cmap import UnitsColormap
 from .data import DATA
 from .units import GeolUnits
-
-from matplotlib.colors import ListedColormap
 
 
 class EUROPA(metaclass=GeolUnits):
@@ -24,14 +23,15 @@ class EUROPA(metaclass=GeolUnits):
         255: 'Ridged plains',
     }
 
-    CMAP = ListedColormap([
-        '#8400a8',
-        '#ffaa00',
-        '#ffd37f',
-        '#ffebaf',
-        '#267300',
-        '#70a800',
-        '#89cd66',
-        '#d3ffbe',
-        '#bee8ff',
-    ])
+    CMAP = UnitsColormap({
+        0: '#9c9c9c',    # Unknown
+        25: '#8400a8',   # Bands
+        50: '#ffaa00',   # Crater
+        75: '#ffd37f',   # Continuous crater ejecta
+        100: '#ffebaf',  # Discontinuous crater ejecta
+        125: '#267300',  # Low albedo chaos
+        150: '#70a800',  # Knobby albedo chaos
+        175: '#89cd66',  # Molted albedo chaos
+        200: '#d3ffbe',  # High albedo chaos
+        255: '#bee8ff',  # Ridged plains
+    }, name='europa_geol')
