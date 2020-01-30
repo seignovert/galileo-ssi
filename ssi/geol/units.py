@@ -137,6 +137,9 @@ class GeolUnits(type):
 
         raise TypeError('Takes anf IMAGE or LON and LAT value(s).')
 
+    def __iter__(cls):
+        return iter(cls.LEGEND.items())
+
     @property
     def img(cls):
         """Map image data."""
