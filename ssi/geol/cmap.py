@@ -24,7 +24,7 @@ class UnitsColormap:
 
     """
 
-    def __new__(cls, units, vmin=0, vmax=255, name=None):
+    def __new__(cls, units, name=None, vmin=0, vmax=255):
         if not isinstance(units, dict):
             raise TypeError('Units must be `dict`')
 
