@@ -108,6 +108,8 @@ class GeolUnits(type):
     LEGEND = None
     IMG = None
 
+    EXTENT = [360, 0, -90, 90]  # Map extent
+
     def __str__(cls):
         return cls.__name__
 
