@@ -2,8 +2,8 @@
 
 import numpy as np
 
-from matplotlib.path import Path
 from matplotlib.patches import PathPatch
+from matplotlib.path import Path
 
 from .align import corr_offset, img_offset
 from .isis import ISISCube
@@ -25,6 +25,7 @@ class SSI(ISISCube):
         Provide line offset to apply to the data.
 
     """
+
     def __init__(self, filename, align=False, offset_s=None, offset_l=None):
         super().__init__(filename)
         self.alignment(align=align, offset_s=offset_s, offset_l=offset_l)
@@ -210,13 +211,13 @@ class SSI(ISISCube):
         return np.cos(np.radians(self.emi))
 
     @property
-    def s(self):
+    def sample(self):
         """Samples grid."""
         return np.broadcast_to(
             np.arange(1, self.NS + 1), (self.NL, self.NS))
 
     @property
-    def l(self):
+    def line(self):  # noqa: E743
         """Lines grid."""
         return np.broadcast_to(
             np.arange(1, self.NL + 1)[:, ...], (self.NL, self.NS))
@@ -260,7 +261,7 @@ class SSI(ISISCube):
             data[self.NS, :],
             data[:, self.NL][::-1],
             data[1, :][::-1],
-            ])
+        ])
 
     def contour(self, **kwargs):
         """Get patch based on the image contour."""
