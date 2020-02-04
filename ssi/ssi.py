@@ -220,7 +220,7 @@ class SSI(ISISCube):
     def line(self):  # noqa: E743
         """Lines grid."""
         return np.broadcast_to(
-            np.arange(1, self.NL + 1)[:, ...], (self.NL, self.NS))
+            np.arange(1, self.NL + 1)[:, None], (self.NL, self.NS))
 
     @property
     def _corr_s(self):
