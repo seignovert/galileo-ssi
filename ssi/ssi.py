@@ -1,5 +1,7 @@
 """Galileo SSI module to parse ISIS files."""
 
+from pathlib import Path as Pathlib
+
 import numpy as np
 
 from matplotlib.patches import PathPatch
@@ -67,7 +69,7 @@ class SSI(ISISCube):
     @property
     def img_id(self):
         """Image ID based on filename."""
-        return self.filename.split('.')[0]
+        return Pathlib(self.filename).stem
 
     @property
     def size(self):
