@@ -18,7 +18,7 @@ class EUROPA(metaclass=GeolUnits):
         100: 'Discontinuous crater ejecta',
         125: 'Low albedo chaos',
         150: 'Knobby albedo chaos',
-        175: 'Molted albedo chaos',
+        175: 'Mottled albedo chaos',
         200: 'High albedo chaos',
         255: 'Ridged plains',
     }
@@ -31,7 +31,7 @@ class EUROPA(metaclass=GeolUnits):
         100: '#ffebaf',  # Discontinuous crater ejecta
         125: '#267300',  # Low albedo chaos
         150: '#70a800',  # Knobby albedo chaos
-        175: '#89cd66',  # Molted albedo chaos
+        175: '#89cd66',  # Mottled albedo chaos
         200: '#d3ffbe',  # High albedo chaos
         255: '#bee8ff',  # Ridged plains
     }, name='europa_geol')
