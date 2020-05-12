@@ -1,6 +1,15 @@
 Python parser for Galileo SSI instrument
 ========================================
 
+|CI| |PyPI| |Version|
+
+.. |CI| image:: https://github.com/seignovert/galileo-ssi/workflows/CI/badge.svg
+         :target: https://github.com/seignovert/galileo-ssi/actions?query=workflow%3ACI
+.. |PyPI| image:: https://img.shields.io/badge/PyPI-galileo--ssi-blue.svg?logo=python&logoColor=white
+         :target: https://pypi.org/project/galileo-ssi
+.. |Version| image:: https://img.shields.io/pypi/v/galileo-ssi.svg?label=Version
+        :target: https://pypi.org/project/galileo-ssi
+
 Install
 -------
 
