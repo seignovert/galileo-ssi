@@ -1,5 +1,6 @@
 """SSI pixel module."""
 
+
 class SSIPixel:
     """SSI pixel object.
 
@@ -14,6 +15,7 @@ class SSIPixel:
 
 
     """
+
     def __init__(self, cube, s, l):
         self.__cube = cube
         self.s = s

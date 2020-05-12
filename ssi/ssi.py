@@ -60,7 +60,7 @@ class SSI(ISISCube):
             return SSIPixel(self, *val)
 
         raise IndexError('\n - '.join([
-            f'Invalid format. Use:',
+            'Invalid format. Use:',
             'STR -> Band image',
             '[INT, INT] -> Sample, Line pixel',
             '[SLICE, SLICE] -> Sample, Line data',

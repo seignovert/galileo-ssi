@@ -39,6 +39,7 @@ def _parse(index, n):
 
 class IMG(np.ndarray):
     """Image object based on Numpy array."""
+
     def __new__(cls, data, *args, **kwargs):
         return np.asarray(data).view(cls) if np.ndim(data) == 2 else \
             np.asarray(data).view(np.ndarray)

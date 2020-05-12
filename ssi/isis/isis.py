@@ -146,8 +146,8 @@ class ISISCube:
     def dtype(self):
         """Cube data type."""
         return np.dtype(
-            BYTE_ORDERS[self._pix['ByteOrder']] +
-            FIELD_TYPES[self._pix['Type']])
+            BYTE_ORDERS[self._pix['ByteOrder']]  # noqa: W504
+            + FIELD_TYPES[self._pix['Type']])   # noqa: W503
 
     @property
     def _start_byte(self):
@@ -282,7 +282,7 @@ class ISISCube:
         return self.stop - self.start
 
     @property
-    def time(self):
+    def time(self):  # noqa: D402
         """Instrument mid time (UTC)."""
         return self.start + self.duration / 2
 
@@ -324,12 +324,12 @@ class ISISCube:
         for k, v in self.__pvl['NaifKeywords']:
             if 'RADII' in k:
                 return v
-        raise ValueError(f'Target radii not found in the header.')
+        raise ValueError('Target radii not found in the header.')
 
     @property
     def target_radius(self):
         """Main target mean radius (km)."""
-        return np.power(np.prod(self.target_radii), 1/3)
+        return np.power(np.prod(self.target_radii), 1 / 3)
 
     @property
     def original_labels(self):
