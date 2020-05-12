@@ -184,4 +184,8 @@ class GeolUnits(type):
             legend = cls.LEGEND
 
         colors = [cmap(k) for k in _key(legend, unit)]
+
+        if not colors:
+            raise ValueError(f'Unit unknown: `{unit}`.')
+
         return colors[0] if len(colors) == 1 else colors
