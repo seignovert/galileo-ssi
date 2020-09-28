@@ -12,6 +12,16 @@ from .isis import ISISCube
 from .pixel import SSIPixel
 
 
+MS = {
+    'ms': 1,
+    'millisecs': 1,
+    'millisecondes': 1,
+    's': 1000,
+    'sec': 1000,
+    'seconds': 1000,
+}
+
+
 class SSI(ISISCube):
     """Galileo Solid State Image System ISIS3 object.
 
@@ -276,3 +286,18 @@ class SSI(ISISCube):
             Path(np.transpose([
                 self._edges(self.lon), self._edges(self.lat)
             ])), **kwargs)
+
+    @property
+    def spacecraft_name(self):
+        """Spacecraft name."""
+        return self._inst['SpacecraftName'].replace(' Orbiter', '').replace('_', ' ').title()
+
+    @property
+    def date(self):
+        """Acquisition date."""
+        return self.start.date()
+
+    @property
+    def expo_ms(self):
+        """Acquisition exposure in millisecondes."""
+        return self.exposure[0] * MS[self.exposure[1]]
