@@ -168,6 +168,11 @@ class SSI(ISISCube):
         return self['Phase Angle']
 
     @property
+    def phase_angle(self):
+        """Image mean phase angle data (degree)."""
+        return np.nanmean(self.phase)
+
+    @property
     def inc(self):
         """Incidence angle data (degree)."""
         return self['Incidence Angle']
