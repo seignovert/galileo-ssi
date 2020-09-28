@@ -303,7 +303,7 @@ class ISISCube:
             return None
 
         kernels = []
-        for kernel in self['Kernels'].values():
+        for kernel in self.header['Kernels'].values():
             if isinstance(kernel, str) and '$' in kernel:
                 kernels.append(kernel)
             elif isinstance(kernel, list):
