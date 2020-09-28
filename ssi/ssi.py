@@ -69,7 +69,7 @@ class SSI(ISISCube):
     @property
     def img_id(self):
         """Image ID based on filename."""
-        return Pathlib(self.filename).stem
+        return Pathlib(self.filename).stem.split('.')[0]
 
     @property
     def size(self):
