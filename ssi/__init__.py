@@ -5,6 +5,6 @@ from .ssi import SSI
 
 
 __all__ = [
-    SSI,
-    LORRI,
+    'SSI',
+    'LORRI',
 ]

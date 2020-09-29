@@ -326,11 +326,11 @@ def q_interp(q0, q1, t, threshold=0.9995):
 
     dot = np.sum(q0 * q1)
 
-    if (dot < 0):
+    if dot < 0:
         q1 = -q1
         dot = -dot
 
-    if (dot > threshold):
+    if dot > threshold:
         result = q0[np.newaxis, :] + t[:, np.newaxis] * (q1 - q0)[np.newaxis, :]
         return hat(result.T).T
 

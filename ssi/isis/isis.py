@@ -48,6 +48,7 @@ class ISISCube:
 
     @property
     def filename(self):
+        """Filename."""
         return self.__filename
 
     @filename.setter

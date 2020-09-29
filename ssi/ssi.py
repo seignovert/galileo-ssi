@@ -290,7 +290,8 @@ class SSI(ISISCube):
     @property
     def spacecraft_name(self):
         """Spacecraft name."""
-        return self._inst['SpacecraftName'].replace(' Orbiter', '').replace('_', ' ').title()
+        name = self._inst['SpacecraftName']
+        return name.replace(' Orbiter', '').replace('_', ' ').title()
 
     @property
     def date(self):

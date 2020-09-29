@@ -81,6 +81,7 @@ class LORRI(SSI):
 
     @property
     def src(self):
+        """Spectral distribution source."""
         return self.__src
 
     @src.setter

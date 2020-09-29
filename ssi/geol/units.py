@@ -132,11 +132,11 @@ class GeolUnits(type):
 
             lon_w = np.ma.array(img.lon, mask=img.limb)
             lat = np.ma.array(img.lat, mask=img.limb)
-            return cls.geol_units(lon_w, lat, legend=legend)
+            return cls.geol_units(lon_w, lat, legend=legend)  # pylint: disable=E1120
 
         if len(args) == 2:
             lon, lat = args
-            return cls.geol_units(lon, lat, legend=legend)
+            return cls.geol_units(lon, lat, legend=legend)  # pylint: disable=E1120
 
         raise TypeError('Takes anf IMAGE or LON and LAT value(s).')
 
