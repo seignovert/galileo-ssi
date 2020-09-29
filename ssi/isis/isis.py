@@ -12,6 +12,7 @@ from .labels import ISISLabels
 from .original_labels import ISISOriginalLabels
 from .tables import ISISTables
 from .vars import BYTE_ORDERS, FIELD_TYPES
+from ..geometry import hat, lonlat, q_rot
 
 
 class ISISCube:
@@ -337,3 +338,50 @@ class ISISCube:
         if self.__lbls is None:
             self.__lbls = ISISOriginalLabels(self.filename, self.pvl)
         return self.__lbls
+
+    @property
+    def _body_rotation(self):
+        """Main target body rotation quaternion."""
+        p = self.tables['BodyRotation'].data
+        q0 = p['J2000Q0']
+        q1 = p['J2000Q1']
+        q2 = p['J2000Q2']
+        q3 = p['J2000Q3']
+
+        q = np.array([q0, q1, q2, q3]).flatten()
+
+        return hat(q)
+
+    @property
+    def _sc_position(self):
+        """Spacecraft position in the main target body frame."""
+        p = self.tables['InstrumentPosition'].data
+        x = p['J2000X']
+        y = p['J2000Y']
+        z = p['J2000Z']
+
+        j2000 = np.array([x, y, z]).flatten()
+
+        return q_rot(self._body_rotation, j2000)
+
+    @property
+    def _sun_position(self):
+        """Sun position in the main target body frame."""
+        p = self.tables['SunPosition'].data
+        x = p['J2000X']
+        y = p['J2000Y']
+        z = p['J2000Z']
+
+        j2000 = np.array([x, y, z]).flatten()
+
+        return q_rot(self._body_rotation, j2000)
+
+    @property
+    def sc(self):
+        """Sub-Spacecraft point (West Longitude, Latitude)."""
+        return lonlat(self._sc_position)
+
+    @property
+    def ss(self):
+        """Sub-solar point (West Longitude, Latitude)."""
+        return lonlat(self._sun_position)
