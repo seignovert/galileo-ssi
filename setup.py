@@ -1,6 +1,6 @@
 """Galileo SSI setup."""
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 with open('requirements.txt', 'r') as f:
@@ -20,7 +20,7 @@ setup(
     install_requires=requirements,
     python_requires='>=3.6',
     license='MIT',
-    packages=['ssi', 'ssi.isis', 'ssi.geol'],
+    packages=find_packages(),
     long_description=long_description,
     include_package_data=True,
 )
