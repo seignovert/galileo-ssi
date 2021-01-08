@@ -193,9 +193,14 @@ class SSI(ISISCube):
         return self['Emission Angle']
 
     @property
+    def lon_e(self):
+        """East longitude data (degree)."""
+        return self['Longitude']
+
+    @property
     def lon(self):
         """West longitude data (degree)."""
-        return -self['Longitude'] % 360
+        return - self.lon_e % 360
 
     @property
     def lat(self):
