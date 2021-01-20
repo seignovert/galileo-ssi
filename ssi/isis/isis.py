@@ -185,7 +185,14 @@ class ISISCube:
             data = f.read(self._nbytes)
 
         data = np.frombuffer(data, dtype=self.dtype) * self._mult + self._base
-        data[self._is_null(data)] = np.nan
+
+        if self.dtype.char == 'f':
+            # Fix saturated pixel (stored as underflow)
+            dmax = np.max(data)
+            data[data == self._underflow] = dmax
+
+            data[self._is_null(data)] = np.nan
+
         return self._reshape(data)
 
     @property
@@ -218,6 +225,9 @@ class ISISCube:
             Location of the null values.
 
         """
+        if self.dtype.char != 'f':
+            return False
+
         return (np.abs(data / self._underflow) >= tol) | \
             (np.abs(data / self._overflow) >= tol)
 
