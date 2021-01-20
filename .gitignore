@@ -4,5 +4,6 @@
 
 # Python
 *.pyc
+*.egg-info/
 __pycache__/
 dist/
