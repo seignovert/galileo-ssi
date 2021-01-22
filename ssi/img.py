@@ -41,8 +41,8 @@ class IMG(np.ndarray):
     """Image object based on Numpy array."""
 
     def __new__(cls, data, *args, **kwargs):  # pylint: disable=unused-argument
-        return np.asarray(data).view(cls) if np.ndim(data) == 2 else \
-            np.asarray(data).view(np.ndarray)
+        return np.array(data).view(cls) if np.ndim(data) == 2 else \
+            np.array(data).view(np.ndarray)
 
     def __str__(self):
         return str(self._data)
@@ -85,4 +85,4 @@ class IMG(np.ndarray):
     @property
     def _data(self):
         """Data content."""
-        return np.asarray(self.data) if self.data.ndim > 1 else np.float32(self.data)
+        return np.array(self.data) if self.data.ndim > 1 else np.float32(self.data)
