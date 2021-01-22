@@ -9,6 +9,7 @@ from matplotlib.path import Path
 
 from .align import corr_offset, img_offset
 from .isis import ISISCube
+from .geometry.contour import edges, ls_contours
 from .pixel import SSIPixel
 
 
@@ -276,22 +277,6 @@ class SSI(ISISCube):
         """Offset in line direction."""
         return 0 if not self.offset else self.offset[1]
 
-    def _edges(self, data):
-        """Get edges from data array."""
-        return np.hstack([
-            data[:, 1],
-            data[self.NS, :],
-            data[:, self.NL][::-1],
-            data[1, :][::-1],
-        ])
-
-    def contour(self, **kwargs):
-        """Get patch based on the image contour."""
-        return PathPatch(
-            Path(np.transpose([
-                self._edges(self.lon), self._edges(self.lat)
-            ])), **kwargs)
-
     @property
     def spacecraft_name(self):
         """Spacecraft name."""
@@ -307,3 +292,46 @@ class SSI(ISISCube):
     def expo_ms(self):
         """Acquisition exposure in millisecondes."""
         return self.exposure[0] * MS[self.exposure[1]]
+
+    @property
+    def valid_pixels(self):
+        """Valid pixels mask.
+
+        A pixel is considered as valid if its photometrically
+        is defined and and have a defined ground coordinate.
+
+        Here only the longitude is checked to exclude the limb
+        pixels.
+
+        """
+        return ~np.isnan(self.data) & ~np.isnan(self.lon)
+
+    @property
+    def contours_ls(self):
+        """List of the image contours line and sample indexes."""
+        return ls_contours(edges(self.valid_pixels))
+
+    @property
+    def contours_coordinates(self):
+        """List of the image contours coordinates."""
+        lons_e = np.array(self.lon_e, dtype=np.float)
+        lats = np.array(self.lat, dtype=np.float)
+
+        return [[lons_e[l, s], lats[l, s]] for (l, s) in self.contours_ls]
+
+    @property
+    def contour_path(self):
+        """List of the image contours coordinates."""
+        vertices, codes = [], []
+        for lons_e, lats in self.contours_coordinates:
+            for lon_e, lat in zip(lons_e, lats):
+                vertices.append((lon_e, lat))
+
+            npts = len(lons_e)
+            codes += [Path.MOVETO] + (npts - 2) * [Path.LINETO] + [Path.CLOSEPOLY]
+
+        return Path(vertices, codes)
+
+    def contour(self, **kwargs):
+        """Get patch based on the image contour."""
+        return PathPatch(self.contour_path, **kwargs)
