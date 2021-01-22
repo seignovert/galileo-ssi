@@ -10,6 +10,7 @@ from matplotlib.path import Path
 from .align import corr_offset, img_offset
 from .isis import ISISCube
 from .geometry.contour import edges, ls_contours
+from .misc import GeoJson
 from .pixel import SSIPixel
 
 
@@ -317,17 +318,20 @@ class SSI(ISISCube):
         lons_e = np.array(self.lon_e, dtype=np.float)
         lats = np.array(self.lat, dtype=np.float)
 
-        return [[lons_e[l, s], lats[l, s]] for (l, s) in self.contours_ls]
+        return [
+            np.transpose([lons_e[lines, samples], lats[lines, samples]])
+            for lines, samples in self.contours_ls
+        ]
 
     @property
     def contour_path(self):
         """List of the image contours coordinates."""
         vertices, codes = [], []
-        for lons_e, lats in self.contours_coordinates:
-            for lon_e, lat in zip(lons_e, lats):
+        for coordinates in self.contours_coordinates:
+            for lon_e, lat in coordinates:
                 vertices.append((lon_e, lat))
 
-            npts = len(lons_e)
+            npts = len(coordinates)
             codes += [Path.MOVETO] + (npts - 2) * [Path.LINETO] + [Path.CLOSEPOLY]
 
         return Path(vertices, codes)
@@ -335,3 +339,42 @@ class SSI(ISISCube):
     def contour(self, **kwargs):
         """Get patch based on the image contour."""
         return PathPatch(self.contour_path, **kwargs)
+
+    def geojson(self, fout=None, prec=3, overwrite=False):
+        """Export image contour as a geojson."""
+        geojson = GeoJson(
+            img_id = self.img_id,
+            start_time = self.start.strftime('%Y-%m-%dT%H:%M:%S'),
+            main_target = self.target_name,
+            NS = self.NS,
+            NL = self.NL,
+            filter = self.filter_name,
+            expo_duration_ms = self.expo_ms,
+            mean_res_m = np.nanmean(self.res.data),
+            inc_min = np.nanmin(self.inc.data),
+            inc_max = np.nanmax(self.inc.data),
+            emi_min = np.nanmin(self.emi.data),
+            emi_max = np.nanmax(self.emi.data),
+            phase_min = np.nanmin(self.phase.data),
+            phase_max = np.nanmax(self.phase.data),
+            offset_l = self.offset_l,
+            offset_s = self.offset_s,
+            polygon = self.contours_coordinates,
+            prec = prec,
+        )
+
+        if fout is None:
+            return geojson
+
+        fout = Pathlib(fout)
+        fname = fout / (self.img_id + '.geojson')
+
+        if fname.exists() and not overwrite:
+            raise FileExistsError(fname)
+
+        # Create output folder if missing
+        fname.parent.mkdir(parents=True, exist_ok=True)
+
+        fname.write_text(geojson.json)
+
+        return fname
