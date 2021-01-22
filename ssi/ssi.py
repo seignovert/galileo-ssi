@@ -351,6 +351,8 @@ class SSI(ISISCube):
             filter = self.filter_name,
             expo_duration_ms = self.expo_ms,
             mean_res_m = np.nanmean(self.res.data),
+            res_m_min = np.nanmin(self.res.data),
+            res_m_max = np.nanmax(self.res.data),
             inc_min = np.nanmin(self.inc.data),
             inc_max = np.nanmax(self.inc.data),
             emi_min = np.nanmin(self.emi.data),
