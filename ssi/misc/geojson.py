@@ -1,6 +1,5 @@
 """GeoJson module."""
 
-from pathlib import Path
 from json import dumps
 
 from collections import UserDict
