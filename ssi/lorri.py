@@ -40,7 +40,7 @@ def _parse(line):
 
 def _values(values):
     """Parse values."""
-    floats = re.findall(r'-?\d+\.\d*[eE]?[-+]?\d*', values)
+    floats = re.findall(r'-?\d+\.\d*(?:[eE]?[-+]?\d+)', values)
     if floats:
         values = [float(v) for v in floats]
     else:
