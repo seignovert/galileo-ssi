@@ -1,3 +1,4 @@
 include LICENSE.md
 include README.rst
 include ssi/geol/data/Europa_geol_map.png
+include ssi/geol/data/Pluto_geol_map.png
