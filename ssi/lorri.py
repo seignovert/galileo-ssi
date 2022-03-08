@@ -5,6 +5,7 @@ import re
 import numpy as np
 
 from .ssi import SSI
+from .isis import ISISCube
 
 
 AU = 1.49598e8         # 1 AU in km
@@ -153,3 +154,43 @@ class LORRI(SSI):
         if self.__data is None:
             self.__data = self._i / self._f
         return self.__data
+    
+    Parameters
+    ----------
+    filename: str
+        Input SSI filename.
+    align: bool, optional
+        Enable data auto-alignment.
+    offset_s: int, optional
+        Provide sample offset to apply to the data.
+    offset_l: int, optional
+        Provide line offset to apply to the data.
+    """
+
+    def __init__(self, filename, align=False, offset_s=None, offset_l=None):
+        super().__init__(filename)
+        self.alignment(align=align, offset_s=offset_s, offset_l=offset_l)
+
+    def __str__(self):
+        return self.img_id
+
+    def __repr__(self):
+        return ('\n - '.join([
+            f'<{self.__class__.__name__}> Cube: {self}',
+            f'Size: {self.NS, self.NL}',
+            f'Start time: {self.start}',
+            f'Filter name: {self.filter_name}',
+            f'Exposure: {self.exposure[0]} {self.exposure[1]}',
+            f'Main target: {self.target_name}',
+            f'Data alignment: {self.offset}',
+        ]))
+
+    def __getitem__(self, val):
+        """Return data array based on value name or index."""
+        if isinstance(val, str):
+            ilayer = self._get_layer(val)
+            data = self.cube[ilayer, :, :]
+
+            return img_offset(data,
+                              offset=self.offset,
+                              is_data=(val == 'Data'))
